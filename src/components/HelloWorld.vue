@@ -1,6 +1,11 @@
 <template>
   <div class="section">
     <div class="container">
+      <b-modal :active.sync="isComponentModalActive" has-modal-card>
+        <modal-form @submitted="getData"></modal-form>
+      </b-modal>
+    </div>
+    <div class="container">
       <div class="level">
         <div class="level-left">
           <b-field horizontal label="Week">
@@ -10,35 +15,38 @@
             </b-select>
           </b-field>
         </div>
+        <div class="level-right">
+          <!-- <b-button>Save</b-button> -->
+        </div>
       </div>
     </div>
     <div class="container">
       <div class="columns">
         <div class="column">
           <h3>Todo:</h3>
-          <div class="cards" v-for="n in 5">
-            <CardComponent />
+          <div class="cards" v-for="data in todo">
+            <CardComponent :author="data.author" :content="data.content"/>
           </div>
           <div>
-            <b-button>Tambah</b-button>
+            <b-button @click="addData('todo')">Tambah</b-button>
           </div>
         </div>
         <div class="column">
           <h3>Ongoing:</h3>
-          <div class="cards" v-for="n in 3">
-            <CardComponent />
+          <div class="cards" v-for="data in ongoing">
+            <CardComponent :author="data.author" :content="data.content"/>
           </div>
           <div>
-            <b-button>Tambah</b-button>
+            <b-button @click="addData('ongoing')">Tambah</b-button>
           </div>
         </div>
         <div class="column">
           <h3>Done:</h3>
-          <div class="cards" v-for="n in 2">
-            <CardComponent />
+          <div class="cards" v-for="data in done">
+            <CardComponent :author="data.author" :content="data.content"/>
           </div>
           <div>
-            <b-button>Tambah</b-button>
+            <b-button @click="addData('done')">Tambah</b-button>
           </div>
         </div>
       </div>
@@ -48,11 +56,82 @@
 
 <script>
 import CardComponent from "./CardComponent";
+import ModalForm from './ModalForm';
 
 export default {
   name: "HelloWorld",
   components: {
-    CardComponent
+    CardComponent,
+    ModalForm
+  },
+  data() {
+    return {
+      isComponentModalActive: false,
+      dataType: '',
+      todo: [
+        {
+          author: 'Corrine Kozey',
+          content: 'Illum eos facere dolores voluptatem officia minus occaecati. Autem non vero qui corrupti sint odit officiis officiis sunt. At voluptas dolorum rem accusantium corrupti. Atque est fuga voluptatem aliquid dolor harum quo libero maxime. Facere est culpa adipisci rerum iure sint odio. Vitae sed aut aut et rerum ratione perferendis explicabo.'
+        },
+        {
+          author: 'Alford Schoen DDS',
+          content: 'Dignissimos at quia rerum porro vitae ea aliquid. Deserunt est facilis maiores. Iste sint debitis fugiat illum doloremque consequatur.'
+        },
+        { 
+          author: 'Johnpaul Mraz',
+          content: 'Eligendi enim voluptatum molestiae modi atque assumenda id quae. Recusandae libero autem ea eveniet qui rem. A id est.'
+        }
+      ],
+      ongoing: [
+        {
+          author: 'Krista Rosenbaum',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        },
+        {
+          author: 'Cristopher Hettinger',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        },
+        {
+          author: 'Jaron Pagac',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        },
+        {
+          author: 'Golda Daniel',
+          content: 'Doloribus eos eum facilis. Ratione eius aut. Qui dolorem libero. Deleniti numquam magni laboriosam debitis velit ut.'
+        },
+        {
+          author: 'Ernie Wisozk',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        },
+      ],
+      done: [
+        {
+          author: 'Uriel Nader',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        },
+        {
+          author: 'Madisen Macejkovic',
+          content: 'Ea laudantium facilis numquam perspiciatis iure. Reiciendis omnis omnis qui nihil sit dolorum aut quaerat vitae. Amet facere explicabo quia.'
+        }
+      ]
+    }
+  },
+  methods: {
+    addData(type) {
+      this.dataType = type;
+      this.isComponentModalActive = true;
+    },
+    getData(data) {
+      if (this.dataType === 'todo') {
+        this.todo.push(data);
+      } else if (this.dataType === 'ongoing') {
+        this.ongoing.push(data);
+      } else if (this.dataType === 'done') {
+        this.done.push(data);
+      }
+      this.isComponentModalActive = false;
+      this.dataType = '';
+    }
   }
 };
 </script>
