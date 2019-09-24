@@ -1,11 +1,6 @@
 <template>
   <div class="section">
     <div class="container">
-      <b-modal :active.sync="isComponentModalActive" has-modal-card>
-        <modal-form @submitted="getData"></modal-form>
-      </b-modal>
-    </div>
-    <div class="container">
       <div class="level">
         <div class="level-left">
           <b-field horizontal label="Week">
@@ -15,8 +10,9 @@
             </b-select>
           </b-field>
         </div>
-        <div class="level-right">
-          <!-- <b-button>Save</b-button> -->
+        <div class="level-right" style="">
+          <b-button>Save</b-button>
+          <b-button @click="newWeek">Add</b-button>
         </div>
       </div>
     </div>
@@ -25,7 +21,7 @@
         <div class="column">
           <h3>Todo:</h3>
           <div class="cards" v-for="data in todo">
-            <CardComponent :author="data.author" :content="data.content"/>
+            <CardComponent :author="data.author" :content="data.content" @deleted="deleteObject(data, 'todo')"/>
           </div>
           <div>
             <b-button @click="addData('todo')">Tambah</b-button>
@@ -51,6 +47,11 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <b-modal :active.sync="isComponentModalActive" has-modal-card>
+        <modal-form @submitted="getData"></modal-form>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -68,6 +69,7 @@ export default {
     return {
       isComponentModalActive: false,
       dataType: '',
+      week: 0,
       todo: [
         {
           author: 'Corrine Kozey',
@@ -131,6 +133,18 @@ export default {
       }
       this.isComponentModalActive = false;
       this.dataType = '';
+    },
+    newWeek() {
+      this.todo = [];
+      this.ongoing = [];
+      this.done = [];
+      this.week++;
+    },
+    deleteObject(data, dataType) {
+      console.log(data);
+      if (dataType === 'todo') {
+        this.todo.splice(this.todo.findIndex(x => x.author === data.author), 1);
+      }
     }
   }
 };

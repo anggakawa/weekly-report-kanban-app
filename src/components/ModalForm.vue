@@ -32,7 +32,9 @@ export default {
   },
   methods: {
     onClick(event){
-      this.$emit('submitted', { author: this.author, content: this.content});
+      if (this.author.length && this.content.length > 0) {
+        this.$emit('submitted', { author: this.author, content: this.content});
+      }
     }
   }
 }

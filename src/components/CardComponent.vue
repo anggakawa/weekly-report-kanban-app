@@ -16,7 +16,7 @@
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">Comment</a>
+      <a class="card-footer-item" @click="deleteObject">Delete</a>
     </footer>
   </div>
 </template>
@@ -27,7 +27,12 @@ export default {
   props : [
     'author',
     'content',
-  ]
+  ],
+  methods: {
+    deleteObject() {
+      this.$emit('deleted');
+    }
+  }
 };
 </script>
 
